@@ -53,7 +53,7 @@ function ossn_recursive_array_search($needle, $haystack) {
 /**
  * Get site url
  *
- * @params $extend =>  Extned site url like http://site.com/my/extended/path
+ * @params $extend =>  Extended site url like http://site.com/my/extended/path
  *
  * @return string
  */
@@ -67,9 +67,9 @@ function ossn_site_url($extend = '', $action = false) {
 }
 
 /**
- * Get data directory contaning user and system files
+ * Get data directory containing user and system files
  *
- * @params $extend =>  Extned data directory path like /home/htdocs/userdata/my/extend/path
+ * @params $extend =>  Extended data directory path like /home/htdocs/userdata/my/extend/path
  *
  * @return string
  */
@@ -108,7 +108,7 @@ function ossn_package_information() {
 }
 
 /**
- * Add a hook to system, hooks are usefull for callback returns
+ * Add a hook to system, hooks are useful for callback returns
  *
  * @param string $hook The name of the hook
  * @param string $type The type of the hook
@@ -153,7 +153,7 @@ function ossn_add_hook($hook, $type, $callback, $priority = 200) {
 	
 }
 /**
- * Unset a hook to system, hooks are usefull for callback returns
+ * Unset a hook to system, hooks are useful for callback returns
  *
  * @param string $hook The name of the hook
  * @param string $type The type of the hook
@@ -349,7 +349,7 @@ function ossn_site_settings($setting) {
 /**
  * Redirect a user to specific external url
  *
- * @param string $new uri of page
+ * @param string $url of page
  *
  * @return boolean|void
  */

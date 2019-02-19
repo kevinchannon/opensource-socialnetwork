@@ -14,13 +14,13 @@ class OssnAlbums extends OssnObject {
 		 *
 		 * @param integer $owner_id User guid who is creating album
 		 * @param string $name Album name
-		 * @param constant $access Album access
+		 * @param integer constant $access Album access
 		 * @param string $type Album type (user, group, page etc)
 		 *
 		 * @return boolean
 		 */
 		public function CreateAlbum($owner_id, $name, $access = OSSN_PUBLIC, $type = 'user') {
-				//check if acess type is valid else set public
+				//check if access type is valid else set public
 				if(!in_array($access, ossn_access_types())) {
 						$access = OSSN_PUBLIC;
 				}
@@ -32,7 +32,7 @@ class OssnAlbums extends OssnObject {
 						$this->data->access = $access;
 						$this->title        = strip_tags($name);
 						
-						//add ablum
+						//add album
 						if($this->addObject()) {
 								$this->getObjectId = $this->getObjectId();
 								return true;
