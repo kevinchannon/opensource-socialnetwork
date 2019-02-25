@@ -38,3 +38,6 @@ error_log
 !/.scrutinizer.yml
 !/.travis.yml
 !.gitignore
+
+#do not ignore my component!
+!/components/GooglePlusImport
