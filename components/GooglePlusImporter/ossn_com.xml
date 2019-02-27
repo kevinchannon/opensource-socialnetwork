@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component xmlns="http://www.opensource-socialnetwork.org/v/3.0">
+    <name>Google+ data importer</name>
+    <id>GooglePlusImporter</id>
+    <author>Kevin Channon</author>
+    <description>Try to import a dump of data from Google into OSSN's database.</description>
+    <license>License name</license>
+    <author_url>http://www.authorurl.com</author_url>
+    <license_url>License URL</license_url>
+    <version>0.1</version>
+    <requires>
+        <type>ossn_version</type>
+        <version>5.0</version>
+    </requires>
+</component>

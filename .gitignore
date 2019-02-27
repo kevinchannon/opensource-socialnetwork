@@ -40,4 +40,4 @@ error_log
 !.gitignore
 
 #do not ignore my component!
-!/components/GooglePlusImport
+!/components/GooglePlusImporter
