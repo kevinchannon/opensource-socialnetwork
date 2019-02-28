@@ -20,25 +20,28 @@ function get_photos(){}
 
 function google_plus_importer_page(){
 
+    $users = new QuickHashIntSet( 64, QuickHashIntSet::CHECK_FOR_DUPES );
+
     $string = file_get_contents("../test_dump.json");
 
     $json_chunk = json_decode($string, true);
 
-    $creation_date = "";
-    $content = "";
-    $photos = [];
+    $takeout_dir_path = "../GooglePlusData";
+    $posts_dir_path = $takeout_dir_path."/Takeout/Google+ Stream/Posts";
+    $posts = new DirectoryIterator(dirname($posts_dir_path));
+    foreach ($posts as $file_info) {
+        if ($file_info->isDot()) {
+            continue;
+        }
 
-    foreach ($json_chunk as $thing => $data) {
-        if ($thing == "creationTime") {
-            $creation_date = $data;
-        } elseif ($thing == "content") {
-            $content = $data;
-        } /* elseif ($thing == "album") {
-            $photos = get_photos();
-        } */
+        $post_file_path = $file_info->getFilename();
+        $file_contents = file_get_contents($post_file_path);
+        $post_json = json_decode($file_contents, true);
+
+        foreach($post_json as $thing => $data) {
+            // Find the post creation date, the content, pictures and comments (including on pictures)
+        }
     }
-
-    printf("Post on %s: %s\n", $creation_date, $content);
 }
 
 ossn_register_callback('ossn', 'init', 'google_plus_importer');
