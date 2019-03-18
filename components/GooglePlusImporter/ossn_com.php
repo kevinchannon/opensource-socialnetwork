@@ -89,31 +89,71 @@ function get_post_from_file(string $file_path) : GooglePlusPost {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-function add_post_to_db(GooglePlusPost $post) {
-
+function add_all_new_users_to_db() {
     // this mapping is because there are already some users in the site DB, so
     // we need to use their user names and not the ones from Google+.
-    $user_mapping = array(
-        "Kevin Channon" => "kevin",
-        "Joanne Channon" => "joanne",
-        "Anthony James" => "Anthony",
-        "Jackie Channon" => "jackie",
-        "Jessica Channon" => "jessica",
-    );
+    $name_mappings_file = fopen("../GooglePlusData/NameMappings.txt", "r") or die("Failed to open name mapping;");
+    fseek($name_mappings_file, 0);
 
-    if ( array_key_exists($post->get_author(), $user_mapping) == false) {
-        // This is a user that we haven't seen before. Add to mapping.
-        $user_mapping[$post->get_author()] = $post->get_author();
+    $user_mappings = array();
 
-        // Add the user to the DB.
-        // TODO: Actually work out how to do things with the main DB...
+    while(!feof($name_mappings_file)) {
+        $line = fgets($name_mappings_file);
+        $line_parts = explode(",", $line);
+        $user_mappings[$line_parts[0]] = $line_parts[1];
     }
 
+    fclose($name_mappings_file);
+
+    foreach ($user_mappings as $full_name => $username) {
+
+        $user_to_add = new OssnUser;
+        $user_to_add->username = $username;
+        if($user_to_add->isOssnUsername()){
+            continue;   // This user is already in the DB.
+        }
+
+        // No user in the DB already; try and make up the rest of the details.
+        $name_parts = explode(" ", $full_name);
+
+        $user_to_add->first_name = $name_parts[0];
+
+        $last_name = "UNKNOWN";
+        if ( count($name_parts) > 1 ) {
+            // The last name is everything except the first name.
+            $last_name = implode(" ", array_slice($name_parts, 1));
+        }
+
+        $user_to_add->last_name = $last_name;
+
+        $user_to_add->email = $full_name."@domain.com";
+        $user_to_add->password = $full_name."\'s password";
+        $user_to_add->sendactiviation = false;
+
+        if ($user_to_add->addUser()) {
+            $em['success'] = 1;
+            $em['datasuccess'] = ossn_print('account:created:email');
+            echo json_encode($em);
+            exit;
+        } else {
+            $em['dataerr'] = ossn_print('account:create:error:admin');
+            echo json_encode($em);
+            exit;
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+function add_post_to_db(GooglePlusPost $post) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 function google_plus_importer_page(){
+
+    // Add any necessary users to the DB.
+    add_all_new_users_to_db();
 
     $takeout_dir_path = "../GooglePlusData";
 
